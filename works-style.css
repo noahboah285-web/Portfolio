@@ -1,0 +1,242 @@
+/* RESET & FONTS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* HIDDEN CLASS FOR TAB SWITCHING */
+.hidden {
+    display: none !important;
+}
+
+/* HEADER & FILTER NAVIGATION */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 40px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 100;
+}
+
+.filter-nav {
+    display: flex;
+    gap: 32px;
+}
+
+.filter-btn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #888888;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.filter-btn:hover {
+    color: #000000;
+}
+
+.filter-btn.active {
+    color: #000000;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
+
+/* SECTION 1: FILM (2-COLUMN GRID) */
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 24px;
+}
+
+.work-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.card-media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+.card-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.card-category {
+    color: #666666;
+}
+
+/* SECTION 2: VIDEO EDITING (SPLIT VIEW) */
+.editing-split-container {
+    display: flex;
+    gap: 48px;
+    margin-top: 20px;
+}
+
+.editing-list-column {
+    width: 320px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+.editing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.editing-table th,
+.editing-table td {
+    padding: 12px 0;
+    border-bottom: 1px solid #eeeeee;
+    text-align: left;
+}
+
+.editing-table th {
+    font-weight: 600;
+    color: #888888;
+    text-transform: uppercase;
+}
+
+.editing-table td a:hover {
+    text-decoration: underline;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.editing-gallery-column {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.editing-card {
+    width: 100%;
+}
+
+.card-meta-bar {
+    display: flex;
+    gap: 24px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #444444;
+}
+
+.card-media-box {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+.card-media-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* SECTION 3: GRAPHIC DESIGN (HORIZ SCROLL) */
+.design-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.design-scroll-gallery {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding-bottom: 24px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.design-scroll-gallery::-webkit-scrollbar {
+    display: none;
+}
+.design-scroll-gallery {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.design-item {
+    flex: 0 0 auto;
+    width: clamp(280px, 30vw, 420px);
+}
+
+.design-media-box {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+.design-media-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.design-info-footer {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+    gap: 32px;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid #eeeeee;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #333333;
+}
+
+.col-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #000000;
+}

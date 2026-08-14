@@ -1,0 +1,125 @@
+/* =========================================
+   RESET & BASE STYLES
+========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f7f7f7;
+    color: #111111;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   TWO-COLUMN GRID LAYOUT
+========================================= */
+.project-layout {
+    display: grid;
+    grid-template-columns: 35% 65%; /* 35% left text, 65% right video gallery */
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* =========================================
+   LEFT COLUMN: STICKY TEXT PANEL
+========================================= */
+.project-info {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+}
+
+/* Back Link */
+.back-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #111;
+    font-size: 0.8rem;
+    margin-bottom: 24px;
+}
+
+/* Paragraph Text */
+.description p {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    margin-bottom: 16px;
+    color: #111;
+    max-width: 400px;
+}
+
+/* Project Title */
+.project-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 24px 0 32px 0;
+}
+
+/* Metadata Block */
+.meta-grid {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 20px;
+}
+
+.meta-label {
+    display: block;
+    font-size: 0.65rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.meta-value {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.roles .meta-label {
+    margin-bottom: 6px;
+}
+
+.roles p {
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   RIGHT COLUMN: SCROLLING VIDEO GALLERY
+========================================= */
+/* =========================================
+   RIGHT COLUMN: SCROLLING VIDEO GALLERY
+========================================= */
+.project-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;              /* Space between individual videos */
+    width: 100%;
+    padding: 24px 24px 24px 0; /* Top, Right, Bottom, Left padding */
+}
+
+.media-item {
+    width: 100%;
+    overflow: hidden;       /* Ensures rounded corners clip properly if used */
+}
+
+.media-item video,
+.media-item img {
+    width: 100%;
+    max-height: calc(100vh - 48px); /* Prevents video from expanding past the padded viewport */
+    object-fit: cover;
+    display: block;
+    /* border-radius: 4px; */       /* Optional: Uncomment for subtle rounded edges */
+}

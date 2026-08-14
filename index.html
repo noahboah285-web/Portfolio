@@ -3,679 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Noah Li — Filmmaker / Editor / Designer</title>
-
-    <!-- Google Fonts -->
+    <title>Cargo® Demo Site</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <!-- =========================================
-         NAVIGATION
+         HEADER / TOP NAVIGATION
     ========================================== -->
-
-    <header class="nav">
-
-        <a href="/" class="nav-logo">
-            NOAH LI
-        </a>
-
-        <nav class="nav-links">
-            <a href="#work">Work</a>
-            <a href="#services">Services</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </nav>
-
-        <div class="nav-location">
-            Calgary / Canada
+    <header class="header">
+        <div class="logo">
+            <h1>Noah Li</h1>
         </div>
 
+        <!-- Three dots button -->
+        <button class="dots-btn" id="contactToggle" aria-label="Open contact info">
+            •••
+        </button>
+
+        <!-- Contact Popover / Tab -->
+        <div class="contact-tab" id="contactTab">
+            <button class="close-btn" id="contactClose">&times;</button>
+            <h3>Contact</h3>
+            <p><a href="mailto:znlxins@gmail.com">znlxins@gmail.com</a></p>
+            <p><a href="https://www.instagram.com/znlxin/" target="_blank" rel="noopener">Instagram ↗</a></p>
+            <p class="location">Calgary, AB</p>
+        </div>
     </header>
 
-
-    <main>
-
-        <!-- =========================================
-             HERO
-        ========================================== -->
-
-        <section class="hero">
-
-            <div class="hero-title">
-                <h1>
-                    NOAH<br>
-                    LI
-                </h1>
-            </div>
-
-            <div class="hero-description">
-
-                <p>
-                    FILMMAKER<br>
-                    EDITOR<br>
-                    DESIGNER
-                </p>
-
-                <p class="hero-small">
-                    Independent creative working across
-                    music, fashion, commercial and
-                    visual projects.
-                </p>
-
-            </div>
-
-            <div class="hero-meta">
-
-                <span>01</span>
-
-                <span>
-                    FILM / EDIT / DESIGN
-                </span>
-
-                <span>
-                    2020 — PRESENT
-                </span>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================================
-             INTRO
-        ========================================== -->
-
-        <section class="intro">
-
-            <div class="section-number">
-                01
-            </div>
-
-            <div class="intro-title">
-                <h2>
-                    SELECTED<br>
-                    WORK
-                </h2>
-            </div>
-
-            <div class="intro-description">
-
-                <p>
-                    A selection of film, editing and
-                    graphic design projects created
-                    for artists, brands and creative
-                    collaborators.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================================
-             WORK
-        ========================================== -->
-
-        <section id="work" class="work">
-
-
-            <!-- PROJECT 01 -->
-
-            <article class="project project-left">
-
-                <div class="project-info">
-
-                    <div class="project-number">
-                        01
-                    </div>
-
-                    <div class="project-details">
-
-                        <h3>
-                            JANDAE<br>
-                            SS2026
-                        </h3>
-
-                        <p>
-                            Music Film
-                        </p>
-
-                        <p>
-                            2026
-                        </p>
-
-                        <div class="credits">
-
-                            <span>DIRECTOR</span>
-                            <span>CINEMATOGRAPHER</span>
-                            <span>EDITOR</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="project-media">
-
-                    <!-- Replace with your video -->
-
-                    <video
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        poster="assets/images/still1.png">
-
-                        <source
-                            src="assets/videos/jandae/jandae1_1.mp4"
-                            type="video/mp4">
-
-                    </video>
-
-                    <a href="#" class="project-link">
-                        VIEW PROJECT ↗
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- PROJECT 02 -->
-
-            <article class="project project-right">
-
-                <div class="project-media">
-
-                    <video
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        poster="assets/images/jandae.jpg">
-
-                        <source
-                            src="assets/videos/jandae.mp4"
-                            type="video/mp4">
-
-                    </video>
-
-                    <a href="#" class="project-link">
-                        VIEW PROJECT ↗
-                    </a>
-
-                </div>
-
-
-                <div class="project-info">
-
-                    <div class="project-number">
-                        02
-                    </div>
-
-                    <div class="project-details">
-
-                        <h3>
-                            JANDAE<br>
-                            SS26
-                        </h3>
-
-                        <p>
-                            Fashion Film
-                        </p>
-
-                        <p>
-                            2026
-                        </p>
-
-                        <div class="credits">
-
-                            <span>DIRECTOR</span>
-                            <span>CINEMATOGRAPHER</span>
-                            <span>EDITOR</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- PROJECT 03 -->
-
-            <article class="project project-left">
-
-                <div class="project-info">
-
-                    <div class="project-number">
-                        03
-                    </div>
-
-                    <div class="project-details">
-
-                        <h3>
-                            ANGEL
-                        </h3>
-
-                        <p>
-                            Music Video
-                        </p>
-
-                        <p>
-                            2026
-                        </p>
-
-                        <div class="credits">
-
-                            <span>DIRECTOR</span>
-                            <span>EDITOR</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="project-media">
-
-                    <video
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        poster="assets/images/angel.jpg">
-
-                        <source
-                            src="assets/videos/angel.mp4"
-                            type="video/mp4">
-
-                    </video>
-
-                    <a href="#" class="project-link">
-                        VIEW PROJECT ↗
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- PROJECT 04 -->
-
-            <article class="project project-right">
-
-                <div class="project-media">
-
-                    <video
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        poster="assets/images/project-04.jpg">
-
-                        <source
-                            src="assets/videos/project-04.mp4"
-                            type="video/mp4">
-
-                    </video>
-
-                    <a href="#" class="project-link">
-                        VIEW PROJECT ↗
-                    </a>
-
-                </div>
-
-
-                <div class="project-info">
-
-                    <div class="project-number">
-                        04
-                    </div>
-
-                    <div class="project-details">
-
-                        <h3>
-                            MADE<br>
-                            BY HAND
-                        </h3>
-
-                        <p>
-                            Brand Film
-                        </p>
-
-                        <p>
-                            2025
-                        </p>
-
-                        <div class="credits">
-
-                            <span>DIRECTOR</span>
-                            <span>CINEMATOGRAPHER</span>
-                            <span>EDITOR</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-        </section>
-
-
-        <!-- =========================================
-             SERVICES
-        ========================================== -->
-
-        <section id="services" class="services">
-
-            <div class="section-number">
-                02
-            </div>
-
-            <div class="services-title">
-
-                <h2>
-                    FILM<br>
-                    EDIT<br>
-                    DESIGN
-                </h2>
-
-            </div>
-
-
-            <div class="services-list">
-
-                <div class="service">
-
-                    <div class="service-number">
-                        01
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            FILM
-                        </h3>
-
-                        <p>
-                            Directing<br>
-                            Cinematography<br>
-                            Production
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="service">
-
-                    <div class="service-number">
-                        02
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            EDIT
-                        </h3>
-
-                        <p>
-                            Video Editing<br>
-                            Motion Design<br>
-                            Color
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="service">
-
-                    <div class="service-number">
-                        03
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            DESIGN
-                        </h3>
-
-                        <p>
-                            Graphic Design<br>
-                            Art Direction<br>
-                            Campaigns
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================================
-             GRAPHIC DESIGN
-        ========================================== -->
-
-        <section class="design">
-
-            <div class="section-number">
-                03
-            </div>
-
-            <div class="design-heading">
-
-                <h2>
-                    GRAPHIC<br>
-                    DESIGN
-                </h2>
-
-            </div>
-
-            <div class="design-description">
-
-                <p>
-                    Selected visual experiments,
-                    posters, campaigns and
-                    graphic work.
-                </p>
-
-            </div>
-
-
-            <div class="design-grid">
-
-                <div class="design-item">
-                    <img
-                        src="assets/images/design-01.jpg"
-                        alt="Graphic design project">
-                </div>
-
-                <div class="design-item">
-                    <img
-                        src="assets/images/design-02.jpg"
-                        alt="Graphic design project">
-                </div>
-
-                <div class="design-item">
-                    <img
-                        src="assets/images/design-03.jpg"
-                        alt="Graphic design project">
-                </div>
-
-                <div class="design-item">
-                    <img
-                        src="assets/images/design-04.jpg"
-                        alt="Graphic design project">
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================================
-             ABOUT
-        ========================================== -->
-
-        <section id="about" class="about">
-
-            <div class="section-number">
-                04
-            </div>
-
-
-            <div class="about-title">
-
-                <h2>
-                    ABOUT
-                </h2>
-
-            </div>
-
-
-            <div class="about-content">
-
-                <p class="about-large">
-                    I'm a self-taught filmmaker,
-                    editor and designer based
-                    in Canada.
-                </p>
-
-                <p>
-                    I create visual work across
-                    music, fashion, commercial
-                    and creative projects.
-                </p>
-
-                <p>
-                    My work focuses on creating
-                    images that feel cinematic,
-                    intentional and human.
-                </p>
-
-            </div>
-
-
-            <div class="about-meta">
-
-                <div>
-                    <span>BASED</span>
-                    <strong>CALGARY / CANADA</strong>
-                </div>
-
-                <div>
-                    <span>EXPERIENCE</span>
-                    <strong>2020 — PRESENT</strong>
-                </div>
-
-                <div>
-                    <span>AVAILABLE</span>
-                    <strong>SELECTED PROJECTS</strong>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================================
-             CONTACT
-        ========================================== -->
-
-        <section id="contact" class="contact">
-
-            <div class="section-number">
-                05
-            </div>
-
-            <div class="contact-title">
-
-                <h2>
-                    HAVE A<br>
-                    PROJECT?
-                </h2>
-
-            </div>
-
-            <div class="contact-action">
-
-                <a href="mailto:your@email.com">
-                    LET'S TALK ↗
-                </a>
-
-            </div>
-
-            <div class="contact-info">
-
-                <a href="mailto:your@email.com">
-                    your@email.com
-                </a>
-
-                <a href="#">
-                    INSTAGRAM ↗
-                </a>
-
-                <a href="#">
-                    VIMEO ↗
-                </a>
-
-                <a href="#">
-                    LINKEDIN ↗
-                </a>
-
-            </div>
-
-        </section>
-
-    </main>
-
+    <!-- =========================================
+         CENTER VIDEO PREVIEW CONTAINER
+    ========================================== -->
+    <div class="video-preview-container">
+        <!-- Added preload="auto" to all videos for instant playback on hover -->
+        <video id="video-1" src="assets/videos/jandae/jandae1_1.mp4" muted loop playsinline preload="auto"></video>
+        <video id="video-2" src="assets/videos/her/directed shot.mp4" muted loop playsinline preload="auto"></video>
+        <video id="video-3" src="assets/videos/angel/angel c1_1.mp4" muted loop playsinline preload="auto"></video>
+        <video id="video-4" src="assets/videos/milkrun/4_1.mp4" muted loop playsinline preload="auto"></video>
+        <video id="video-5" src="assets/videos/project-5.mp4" muted loop playsinline preload="auto"></video>
+        <video id="video-6" src="assets/videos/project-6.mp4" muted loop playsinline preload="auto"></video>
+        <video id="video-7" src="assets/videos/project-7.mp4" muted loop playsinline preload="auto"></video>
+        <video id="video-8" src="assets/videos/project-8.mp4" muted loop playsinline preload="auto"></video>
+    </div>
 
     <!-- =========================================
-         FOOTER
+         SELECTED WORKS (FOOTER INLINE LINKS)
     ========================================== -->
-
-    <footer class="footer">
-
-        <div>
-            NOAH LI
+    <main class="works-container">
+        <span class="label">Selected work:</span>
+        <div class="works-list">
+            <a href="projects/jandae.html" class="work-item" data-video="video-1">Jandae SS2026,<sup>1</sup></a>
+            <a href="projects/her.html" class="work-item" data-video="video-2">Her,<sup>2</sup></a>
+            <a href="projects/angel.html" class="work-item" data-video="video-3">Angel,<sup>3</sup></a>
+            <a href="projects/milkrun.html" class="work-item" data-video="video-4">Milkrun '25',<sup>4</sup></a>
+            <a href="works.html" class="work-item">All Work,<sup>5</sup></a>
         </div>
+    </main>
 
-        <div>
-            FILM / EDIT / DESIGN
-        </div>
+    <!-- =========================================
+         JAVASCRIPT CONTROLS
+    ========================================== -->
+    <script>
+        // 1. Contact Popover Toggle
+        const toggleBtn = document.getElementById('contactToggle');
+        const closeBtn = document.getElementById('contactClose');
+        const contactTab = document.getElementById('contactTab');
 
-        <div>
-            © 2026
-        </div>
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactTab.classList.toggle('active');
+        });
 
-    </footer>
+        closeBtn.addEventListener('click', () => {
+            contactTab.classList.remove('active');
+        });
 
+        document.addEventListener('click', (e) => {
+            if (!contactTab.contains(e.target) && e.target !== toggleBtn) {
+                contactTab.classList.remove('active');
+            }
+        });
 
-    <!-- JavaScript -->
-    <script src="js/script.js"></script>
+        // 2. Video Hover Logic
+        const workLinks = document.querySelectorAll('.work-item[data-video]');
 
+        workLinks.forEach(link => {
+            const videoId = link.getAttribute('data-video');
+            const targetVideo = document.getElementById(videoId);
+
+            if (!targetVideo) return;
+
+            let playPromise;
+
+            link.addEventListener('mouseenter', () => {
+                targetVideo.classList.add('active');
+                targetVideo.muted = true; // Ensures browser allows playback
+
+                playPromise = targetVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Playback interrupted or blocked:", error);
+                    });
+                }
+            });
+
+            link.addEventListener('mouseleave', () => {
+                targetVideo.classList.remove('active');
+
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        targetVideo.pause();
+                        targetVideo.currentTime = 0;
+                    }).catch(() => {
+                        targetVideo.pause();
+                    });
+                } else {
+                    targetVideo.pause();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
