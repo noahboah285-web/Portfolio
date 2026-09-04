@@ -12,7 +12,7 @@
 <body>
 
     <!-- Back button / Top Nav -->
-    <a href="../index.html" class="back-link">← Back</a>
+    <a href="index.html" id="back-btn" class="back-link">← BACK</a>
 
     <div class="project-layout">
         
@@ -64,3 +64,20 @@
 
 </body>
 </html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const backBtn = document.getElementById("back-btn");
+        const referrer = document.referrer;
+
+        // Check if the user came from the Works page
+        if (referrer.includes("works.html")) {
+            backBtn.href = "../works.html";
+            backBtn.textContent = "← WORKS";
+        } else {
+            // Default fallback to Home
+            backBtn.href = "../index.html";
+            backBtn.textContent = "← HOME";
+        }
+    });
+</script>

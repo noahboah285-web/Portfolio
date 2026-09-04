@@ -240,3 +240,41 @@ a {
     margin-bottom: 8px;
     color: #000000;
 }
+
+/* Enable scrolling and clear default constraints */
+.design-scroll-gallery {
+    display: flex;
+    gap: 32px;
+    overflow-x: auto; /* Enables horizontal scrollbar */
+    scroll-behavior: smooth;
+    padding-bottom: 20px; /* Space between images and the scrollbar */
+    
+    /* Subtle custom scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 1. Track (the background line of the scrollbar) */
+.design-scroll-gallery::-webkit-scrollbar {
+    height: 4px; /* Thin, elegant bar height */
+}
+
+.design-scroll-gallery::-webkit-scrollbar-track {
+    background: #e5e5e5; /* Light gray track background */
+    border-radius: 2px;
+}
+
+/* 2. Thumb (the movable scroll indicator) */
+.design-scroll-gallery::-webkit-scrollbar-thumb {
+    background: #111111; /* Dark thumb to match site theme */
+    border-radius: 2px;
+}
+
+.design-scroll-gallery::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+}
+
+/* Firefox scrollbar support */
+.design-scroll-gallery {
+    scrollbar-width: thin;
+    scrollbar-color: #111111 #e5e5e5;
+}
