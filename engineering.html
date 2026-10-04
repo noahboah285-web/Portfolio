@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noah Li Engineering Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- =========================================
+         HEADER / TOP NAVIGATION
+    ========================================== -->
+    <header class="header">
+        <div class="logo">
+            <h1>Noah Li</h1>
+        </div>
+
+        <!-- Three dots button -->
+        <button class="dots-btn" id="contactToggle" aria-label="Open contact info">
+            •••
+        </button>
+
+        <!-- Contact Popover / Tab -->
+        <div class="contact-tab" id="contactTab">
+            <button class="close-btn" id="contactClose">&times;</button>
+            <h3>Contact</h3>
+            <p><a href="mailto:noah.li@ucalgary.ca">noah.li@ucalgary.ca</a></p>
+            <p><a href="https://www.linkedin.com/in/noahlizh/" target="_blank" rel="noopener">LinkedIn ↗</a></p>
+            <p class="location">Calgary, AB</p>
+            
+            <div class="contact-actions">
+                <a href="../index.html" class="portfolio-btn">Film Portfolio ↗</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================================
+         FULL-SCREEN CONTINUOUS BACKGROUND VIDEO
+    ========================================== -->
+    <div class="video-preview-container">
+        <!-- Always playing background video -->
+        <video class="active" src="assets/videos/engineering/fea_1_1.mp4" autoplay muted loop playsinline preload="auto"></video>
+    </div>
+
+    <!-- =========================================
+         SPLIT MAIN CONTAINER (Intro Left, Works Right)
+    ========================================== -->
+    <main class="eng-main-container">
+        
+        <!-- Left Column: Name & Intro -->
+        <div class="eng-intro-col">
+            <p class="eng-bio">
+                Through engineering, I've developed a curiosity about how things work and why they fail. Through ReVOLT EV, I’ve been able to explore that interest through mechanical design and FEA, while building my own finite element solver to better understand the physics behind engineering systems. These experiences have pushed me toward materials, analysis, and solving problems from first principles.
+            </p>
+        </div>
+
+        <!-- Right Column: Stacked Project Links -->
+        <div class="eng-works-col">
+            <span class="label">Engineering Projects:</span>
+            <div class="eng-works-list">
+                <a href="https://awsbjt3xvdu2c37jyzpubn.streamlit.app/" class="work-item" target="_blank" rel="noopener">2D FEA Heat Transfer Solver<sup>1</sup></a>
+                <a href="projects/battery-box.html" class="work-item">Electric Motorcycle Battery Box<sup>2</sup></a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- =========================================
+         JAVASCRIPT CONTROLS (Contact Toggle Only)
+    ========================================== -->
+    <script>
+        // Contact Popover Toggle
+        const toggleBtn = document.getElementById('contactToggle');
+        const closeBtn = document.getElementById('contactClose');
+        const contactTab = document.getElementById('contactTab');
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactTab.classList.toggle('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            contactTab.classList.remove('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!contactTab.contains(e.target) && e.target !== toggleBtn) {
+                contactTab.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

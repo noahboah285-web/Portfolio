@@ -1,0 +1,450 @@
+/* =========================================
+   RESET & BASE STYLES
+========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f7f7f7;
+    color: #111111;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    overflow: hidden;
+    position: relative; /* REQUIRED for centering the video container */
+    -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   HEADER & LOGO
+========================================= */
+/* =========================================
+   HEADER & LOGO
+========================================= */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 10;
+    
+    /* Applies difference blend mode to header text & dots button */
+    mix-blend-mode: difference;
+    color: #ffffff;
+}
+
+.logo h1, .logo h2 {
+    font-size: 1.5rem;          /* Reduced from 2rem to match the delicate scale */
+    font-weight: 400;          /* Reduced from 600 to Regular/Normal weight */
+    letter-spacing: -0.02em;   /* Slightly tighter for modern typography */
+    line-height: 1.05;
+    color: #ffffff;
+}
+
+.dots-btn {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    font-weight: 400;          /* Changed from bold to regular */
+    letter-spacing: 2px;
+    cursor: pointer;
+    color: #ffffff;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.dots-btn:hover {
+    opacity: 0.6;
+}
+/* =========================================
+   CONTACT TAB (POPOVER)
+========================================= */
+.contact-tab {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 240px;
+    background: #ffffff;
+    border: 1px solid #111;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    
+    /* Isolation keeps popover text crisp and non-blended */
+    mix-blend-mode: normal;
+    color: #111111;
+}
+
+.contact-tab a, 
+.contact-tab h3, 
+.contact-tab .location, 
+.close-btn {
+    color: #111111;
+}
+
+.contact-tab.active {
+    display: flex;
+}
+
+.contact-tab h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.contact-tab a {
+    color: #111;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.contact-tab a:hover {
+    text-decoration: underline;
+}
+
+.contact-tab .location {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 8px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* =========================================
+   VIDEO PREVIEW AREA (THIS WAS MISSING!)
+========================================= */
+/* =========================================
+   FULL-SCREEN VIDEO BACKGROUND PREVIEW
+========================================= */
+.video-preview-container {
+    position: fixed;        /* Fixes container to fill the full screen viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;   /* Keeps text, links, and three-dot buttons clickable */
+    z-index: 0;             /* Places video behind header and text links */
+    overflow: hidden;
+}
+
+.video-preview-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* Scales video to fill entire screen without stretching */
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out; /* Smooth fade effect */
+}
+
+.video-preview-container video.active {
+    opacity: 1;
+}
+/* =========================================
+   SELECTED WORKS (INLINE FOOTNOTE LIST)
+========================================= */
+.works-container {
+    max-width: 1100px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 10;
+    
+    /* Applies difference blend mode to all project text */
+    mix-blend-mode: difference;
+    color: #ffffff;
+}
+
+.label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.work-item {
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: #ffffff; /* Must be white for difference mode to calculate accurately */
+    text-decoration: none;
+    display: inline;
+    margin-right: 6px;
+    transition: opacity 0.2s ease;
+}
+
+.work-item:hover {
+    opacity: 0.6; /* Keeps subtle hover dimming */
+}
+
+.work-item.static {
+    color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .logo h1, .logo h2 {
+        font-size: 1.2rem; /* Adjusted for mobile screens */
+    }
+    
+    .work-item {
+        font-size: 1.5rem;
+    }
+
+    .work-item sup {
+        font-size: 0.8rem;
+    }
+}
+
+.video-preview-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+.video-preview-container video.active {
+    opacity: 1;
+}
+
+.contact-actions {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Subtle separator line */
+}
+
+.portfolio-btn {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    text-decoration: none;
+    padding: 8px 12px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.portfolio-btn:hover {
+    background: #e0e0e0;
+}
+
+/* =========================================
+   ENGINEERING PORTFOLIO SPLIT LAYOUT
+========================================= */
+.eng-main-container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 10;
+    mix-blend-mode: difference;
+    color: #ffffff;
+    padding-bottom: 8px;
+}
+
+.eng-intro-col {
+    max-width: 360px;
+}
+
+.eng-bio {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.eng-works-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.eng-works-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.eng-works-list .work-item {
+    display: block;
+    margin-right: 0;
+}
+
+/* Responsive adjustment for mobile devices */
+@media (max-width: 768px) {
+    .eng-main-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 32px;
+    }
+
+    .eng-works-col {
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .eng-works-list {
+        align-items: flex-start;
+    }
+}
+
+/* =========================================
+   PROJECT DETAIL PAGE STYLES
+========================================= */
+.project-container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 40px auto 0 auto;
+    position: relative;
+    z-index: 10;
+    mix-blend-mode: difference;
+    color: #ffffff;
+    padding-bottom: 60px;
+}
+
+.project-header {
+    margin-bottom: 40px;
+}
+
+.project-category {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.project-header h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    line-height: 1.1;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.project-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.spec-block h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.spec-block p, .spec-block li {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #ffffff;
+}
+
+.file-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.project-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+.project-content h3:first-of-type {
+    margin-top: 0;
+}
+
+.project-content p, .project-content li {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    color: #ffffff;
+    font-weight: 400;
+}
+
+.project-content ul, .project-content ol {
+    padding-left: 20px;
+    margin-bottom: 16px;
+}
+
+.project-content a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.back-home-link {
+    text-decoration: none;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .project-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    .project-header h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/* =========================================
+   SCROLLABLE PROJECT PAGES FIX
+========================================= */
+body.project-body {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

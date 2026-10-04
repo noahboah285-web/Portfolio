@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noah Li Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- =========================================
+         HEADER / TOP NAVIGATION
+    ========================================== -->
+    <header class="header">
+        <div class="logo">
+            <h1>Noah Li</h1>
+        </div>
+
+        <!-- Three dots button -->
+        <button class="dots-btn" id="contactToggle" aria-label="Open contact info">
+            •••
+        </button>
+
+        <!-- Contact Popover / Tab -->
+        <div class="contact-tab" id="contactTab">
+            <button class="close-btn" id="contactClose">&times;</button>
+            <h3>Contact</h3>
+            <p><a href="mailto:znlxins@gmail.com">znlxins@gmail.com</a></p>
+            <p><a href="https://www.instagram.com/znlxin/" target="_blank" rel="noopener">Instagram ↗</a></p>
+            <p class="location">Calgary, AB</p>
+            <div class="contact-actions">
+                <a href="engineering/index.html" class="portfolio-btn">Engineering Portfolio ↗</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================================
+         CENTER VIDEO PREVIEW CONTAINER
+    ========================================== -->
+    <div class="video-preview-container">
+        <!-- Added preload="auto" to all videos for instant playback on hover -->
+        <video id="video-1" src="assets/videos/jandae/jandae1_1_1.mp4" muted loop playsinline preload="metadata"></video>
+        <video id="video-2" src="assets/videos/her/directed shot_1.mp4" muted loop playsinline preload="metadata"></video>
+        <video id="video-3" src="assets/videos/angel/angel c1_1_1.mp4" muted loop playsinline preload="metadata"></video>
+        <video id="video-4" src="assets/videos/milkrun/4_1_1.mp4" muted loop playsinline preload="metadata"></video>
+
+    </div>
+
+    <div class="video-preview-container">
+    <!-- Main videos with dual-source setup -->
+    <video id="video-1" src="assets/videos/jandae/jandae1_1_1.mp4" data-lowres="assets/videos/jandae/jandae1_1_1_low.mp4" muted loop playsinline preload="metadata"></video>
+    <video id="video-2" src="assets/videos/her/directed shot_1.mp4" data-lowres="assets/videos/her/directed shot_1_low.mp4" muted loop playsinline preload="metadata"></video>
+    <video id="video-3" src="assets/videos/angel/angel c1_1_1.mp4" data-lowres="assets/videos/angel/angel c1_1_1_low.mp4" muted loop playsinline preload="metadata"></video>
+    <video id="video-4" src="assets/videos/milkrun/4_1_1.mp4" data-lowres="assets/videos/milkrun/4_1_1_low.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <!-- =========================================
+         SELECTED WORKS (FOOTER INLINE LINKS)
+    ========================================== -->
+    <main class="works-container">
+        <span class="label">Selected work:</span>
+        <div class="works-list">
+            <a href="projects/jandae.html" class="work-item" data-video="video-1">Jandae SS2026,<sup>1</sup></a>
+            <a href="projects/her.html" class="work-item" data-video="video-2">Her,<sup>2</sup></a>
+            <a href="projects/angel.html" class="work-item" data-video="video-3">Angel,<sup>3</sup></a>
+            <a href="projects/milkrun.html" class="work-item" data-video="video-4">Milkrun '25',<sup>4</sup></a>
+            <a href="works.html" class="work-item">All Work,<sup>5</sup></a>
+        </div>
+    </main>
+
+    <!-- =========================================
+         JAVASCRIPT CONTROLS
+    ========================================== -->
+    <script>
+        // 1. Contact Popover Toggle
+        const toggleBtn = document.getElementById('contactToggle');
+        const closeBtn = document.getElementById('contactClose');
+        const contactTab = document.getElementById('contactTab');
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactTab.classList.toggle('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            contactTab.classList.remove('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!contactTab.contains(e.target) && e.target !== toggleBtn) {
+                contactTab.classList.remove('active');
+            }
+        });
+
+        // 2. Progressive Video Hover Logic (Low-Res First -> High-Res Swap)
+const workLinks = document.querySelectorAll('.work-item[data-video]');
+
+workLinks.forEach(link => {
+    const videoId = link.getAttribute('data-video');
+    const mainVideo = document.getElementById(videoId);
+
+    if (!mainVideo) return;
+
+    const lowResSrc = mainVideo.getAttribute('data-lowres');
+    let lowResVideo = null;
+    let isHovered = false;
+
+    // Create low-res counterpart video dynamically
+    if (lowResSrc) {
+        lowResVideo = document.createElement('video');
+        lowResVideo.src = lowResSrc;
+        lowResVideo.muted = true;
+        lowResVideo.loop = true;
+        lowResVideo.playsInline = true;
+        lowResVideo.preload = 'auto';
+        
+        // Append to container next to main video
+        mainVideo.parentNode.appendChild(lowResVideo);
+    }
+
+    link.addEventListener('mouseenter', () => {
+        isHovered = true;
+
+        // Check if main high-res video is already cached/ready
+        const isMainReady = mainVideo.readyState >= 3; // HAVE_FUTURE_DATA or higher
+
+        if (isMainReady || !lowResVideo) {
+            // High-res ready: Play directly
+            mainVideo.classList.add('active');
+            mainVideo.play().catch(err => console.log(err));
+        } else {
+            // High-res buffering: Play low-res instantly and load high-res in background
+            lowResVideo.classList.add('active');
+            lowResVideo.play().catch(err => console.log(err));
+
+            // Start preloading high-res video
+            mainVideo.load();
+
+            // Swap when high-res is ready to play smoothly
+            const onCanPlay = () => {
+                if (isHovered) {
+                    mainVideo.currentTime = lowResVideo.currentTime; // Sync timestamp
+                    mainVideo.classList.add('active');
+                    lowResVideo.classList.remove('active');
+
+                    mainVideo.play().catch(err => console.log(err));
+                    lowResVideo.pause();
+                }
+                mainVideo.removeEventListener('canplaythrough', onCanPlay);
+            };
+
+            mainVideo.addEventListener('canplaythrough', onCanPlay, { once: true });
+        }
+    });
+
+    link.addEventListener('mouseleave', () => {
+        isHovered = false;
+
+        // Reset and pause both videos
+        [mainVideo, lowResVideo].forEach(vid => {
+            if (vid) {
+                vid.classList.remove('active');
+                vid.pause();
+                vid.currentTime = 0;
+            }
+        });
+    });
+});
+    </script>
+</body>
+</html>

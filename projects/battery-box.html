@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noah Li — Electric Motorcycle Battery Box (ReVOLT EV)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="project-body">
+
+    <!-- =========================================
+         HEADER / TOP NAVIGATION
+    ========================================== -->
+    <header class="header">
+        <div class="logo">
+            <a href="../engineering.html" class="back-home-link"><h1>Noah Li</h1></a>
+        </div>
+
+        <!-- Three dots button -->
+        <button class="dots-btn" id="contactToggle" aria-label="Open contact info">
+            •••
+        </button>
+
+        <!-- Contact Popover / Tab -->
+        <div class="contact-tab" id="contactTab">
+            <button class="close-btn" id="contactClose">&times;</button>
+            <h3>Contact</h3>
+            <p><a href="mailto:znlxins@gmail.com">znlxins@gmail.com</a></p>
+            <p><a href="https://www.instagram.com/znlxin/" target="_blank" rel="noopener">Instagram ↗</a></p>
+            <p class="location">Calgary, AB</p>
+            
+            <div class="contact-actions">
+                <a href="../engineering.html" class="portfolio-btn">← Engineering Portfolio</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================================
+         PROJECT CONTENT CONTAINER
+    ========================================== -->
+    <main class="project-container">
+        
+        <!-- Project Header / Title -->
+        <div class="project-header">
+            <span class="project-category">ReVOLT EV / Mechanical Design & FEA</span>
+            <h2>Electric Motorcycle Battery Box</h2>
+        </div>
+
+        <!-- Project Body Grid (Metadata Left, Writeup Right) -->
+        <div class="project-grid">
+            
+            <!-- Left Column: Specs -->
+            <div class="project-sidebar">
+                <div class="spec-block">
+                    <h4>Material Selection</h4>
+                    <p><strong>Baseline:</strong> 11 GA HRPO Steel</p>
+                    <p><strong>Selected:</strong> 5052 Aluminum (Sheet metal / formability) & 6061-T6 Aluminum (Structural body)</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Engineering Details, 3D Model & Methodology -->
+            <div class="project-content">
+                <h3>Executive Summary</h3>
+                <p>
+                    <strong>Electric Motorcycle Battery Box, ReVOLT EV</strong><br>
+                    Designed and 3D modeled a battery enclosure in SolidWorks to accommodate a 200 A continuous current under 60°C. Optimized manufacturability by selecting 5052 aluminum sheet metal and incorporating the 0.76mm maximum bend radius constraint into the enclosure design. Utilized FEA simulations to improve strength, thermal performance, and component accessibility.
+                </p>
+
+                <!-- Full-Width Interactive 3D Model Showcase -->
+                <div style="margin: 40px 0;">
+                    <h3 style="margin-bottom: 12px;">Interactive Assembly Preview</h3>
+                    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+                    <model-viewer 
+                        id="batteryModel"
+                        src="../assets/Assembly_gltf/assembly.gltf" 
+                        alt="Battery Box 3D Model" 
+                        auto-rotate 
+                        camera-controls 
+                        exposure="0.5"
+                        shadow-intensity="0"
+                        environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
+                        field-of-view="20deg"
+                        style="width: 100%; height: 600px; background-color: transparent;">
+                    </model-viewer>
+                </div>
+
+                <h3>Material Analysis & Formability</h3>
+                <p>
+                    While 11 GA HRPO steel is traditional for industrial enclosures, weight constraints for the ReVOLT EV platform necessitated a transition to aluminum. 
+                </p>
+                <ul>
+                    <li><strong>5052 Aluminum (0.032" / 0.81mm thickness):</strong> Selected for edge pieces and sheet metal formability, strictly adhering to the 0.76mm maximum bend radius constraint to prevent micro-fracturing during brake forming.</li>
+                    <li><strong>6061-T6 Aluminum (0.1285" / 3.26mm thickness):</strong> Utilized for primary structural load-bearing components and base plates.</li>
+                </ul>
+
+                <h3>Thermal Management & FEA Optimization</h3>
+                <p>
+                    To maintain operating temperatures below the 60°C threshold under a 200 A continuous electrical load, the assembly integrates a 120x120x38mm axial fan for forced-air convection. 
+                </p>
+                <p>
+                    Finite Element Analysis (FEA) was leveraged iteratively across the digital prototype to:
+                </p>
+                <ul>
+                    <li>Validate structural integrity against vehicle shock, vibration, and dynamic load factors.</li>
+                    <li>Simulate internal thermal gradients to ensure uniform heat dissipation across the 12x11 cell pack configuration.</li>
+                    <li>Refine internal packaging for optimized component accessibility during maintenance.</li>
+                </ul>
+            </div>
+
+        </div>
+        
+
+    </main>
+
+    <!-- =========================================
+         JAVASCRIPT CONTROLS
+    ========================================== -->
+    <script>
+        // Contact Popover Toggle
+        const toggleBtn = document.getElementById('contactToggle');
+        const closeBtn = document.getElementById('contactClose');
+        const contactTab = document.getElementById('contactTab');
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactTab.classList.toggle('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            contactTab.classList.remove('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!contactTab.contains(e.target) && e.target !== toggleBtn) {
+                contactTab.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
