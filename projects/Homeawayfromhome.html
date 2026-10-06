@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short Film — Project Page</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           RESET & BASE STYLES
+        ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f7f7f7;
+            color: #111111;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =========================================
+           TWO-COLUMN GRID LAYOUT
+        ========================================= */
+        .project-layout {
+            display: grid;
+            grid-template-columns: 35% 65%; /* 35% left text, 65% right video gallery */
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* =========================================
+           LEFT COLUMN: STICKY TEXT PANEL
+        ========================================= */
+        .project-info {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        /* Back Link */
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            color: #111;
+            font-size: 0.8rem;
+            margin-bottom: 24px;
+        }
+
+        /* Paragraph Text */
+        .description p {
+            font-size: 0.8rem;
+            line-height: 1.45;
+            margin-bottom: 16px;
+            color: #111;
+            max-width: 400px;
+        }
+
+        /* Project Title */
+        .project-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 24px 0 32px 0;
+        }
+
+        /* Metadata Block */
+        .meta-grid {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            display: block;
+            font-size: 0.65rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .roles .meta-label {
+            margin-bottom: 6px;
+        }
+
+        .roles p {
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1.35;
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           RIGHT COLUMN: SCROLLING VIDEO & SCRIPT GALLERY
+        ========================================= */
+        .project-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;           /* Space between elements */
+            width: 100%;
+            padding: 24px 24px 24px 0; /* Top, Right, Bottom, Left padding */
+        }
+
+        .media-item {
+            width: 100%;
+            overflow: hidden;    /* Ensures rounded corners clip properly if used */
+        }
+
+        .media-item video,
+        .media-item img,
+        .media-item iframe {
+            width: 100%;
+            max-height: calc(100vh - 48px); /* Prevents video from expanding past padded viewport */
+            object-fit: cover;
+            display: block;
+            border: none;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* =========================================
+           MINIMALIST SPOTIFY-STYLE SCREENPLAY READER
+        ========================================= */
+        .script-container {
+            width: 100%;
+            height: 50vh; /* Reduced from calc(100vh - 48px) to 50vh */
+            background: #ffffff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .script-viewport {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20% 10%; /* Reduced top/bottom padding from 40% to 20% for smaller height */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Hide scrollbars for clean minimal aesthetic */
+        .script-viewport::-webkit-scrollbar {
+            display: none;
+        }
+        .script-viewport {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .script-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .script-line {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #bbbbbb;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            user-select: none;
+            transform-origin: left center;
+        }
+
+        .script-line:hover {
+            color: #666666;
+        }
+
+        .script-line.active {
+            color: #111111;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transform: scale(1.02);
+        }
+
+        .script-line.scene-heading {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .script-line.character {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 8px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 850px) {
+            .project-layout {
+                grid-template-columns: 100%;
+            }
+
+            .project-info {
+                position: relative;
+                height: auto;
+                padding: 24px;
+            }
+
+            .project-gallery {
+                padding: 0 24px 24px 24px;
+            }
+
+            .script-container {
+                height: 70vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="project-layout">
+        
+        <!-- LEFT COLUMN: Sticky Text Section -->
+        <aside class="project-info">
+            <div class="info-content">
+                <!-- Dynamic Back Link matching your logic -->
+                <a href="../index.html" id="back-btn" class="back-link">← BACK</a>
+
+                <div class="description">
+                    <p>As a student with my parents living abroad myself, I wanted to convey the feelings and struggles that international students face day to day.</p>
+                </div>
+
+                <h1 class="project-title">Home Away From Home</h1>
+
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">CLIENT:</span>
+                        <span class="meta-value">INDEPENDENT</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">YEAR:</span>
+                        <span class="meta-value">OCT 2026</span>
+                    </div>
+                </div>
+
+                <div class="roles">
+                    <span class="meta-label">ROLE:</span>
+                    <p>WRITER & DIRECTOR</p>
+                    <p>CINEMATOGRAPHER</p>
+                    <p>EDITOR</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT COLUMN: Scrolling Video & Screenplay Feed -->
+        <main class="project-gallery">
+            
+            <!-- YouTube Embed Video Item -->
+            <div class="media-item">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/watch?v=objdSG2CWp8" 
+                        title="Short Film Trailer" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Minimalist Auto-Scrolling Screenplay Box (Spotify-style) -->
+            <div class="media-item">
+                <div class="script-container">
+                    <div class="script-viewport" id="scriptViewport">
+                        <div class="script-content" id="scriptContent">
+                            <div class="script-line" data-index="0">Q: 혼자 해외에서 생활하는건 어떤 기분인가요? What is it like living abroad on your own?</div>
+                            <div class="script-line" data-index="1">A: 혼자 해외에서 살아간다는 건 참 외로운 것 같아요. Living abroad on my own can be quite lonely. </div>
+                            <div class="script-line" data-index="3">다른 친구들은 여기서 가족들과 밥도 먹고 여가생활도 보내는 반면에 저는 이제 혼자 밥을 차리고 밥을 먹어야하고 여가생활도 주변의 친구들이랑만 보내야한다는게 참 아쉬운 거 같아요.
+While other friends here get to have meals with their families and spend their free time with them, I have to cook and eat by myself, and I mostly spend my free time with friends around me. I think that can feel a little sad sometimes. 
+</div>
+                            <div class="script-line" data-index="4">그리고 또 여기서는 힘든일이 있거나 걱정이 있을 때 털어 놓을 사람이 제 주변에 친구들 밖에 없는데, 여기 사는 친구들은 가족들이나, 부모님이나 여러 사람들한테털어 놓을 수 있다는게 부러운 부분인 것 같아요. 
+Another difficult part is that when I’m going through a hard time or have something I’m worried about, the only people I really can talk to are my friends. I sometimes feel envious of people who live here with their families because they have their parents and other people they can turn to when they are struggling. 
+</div>
+                            <div class="script-line" data-index="6">또 저는 한국에 있는 부모님들이 더 제 걱정을 하실까봐 걱정을 마음에 담아두고 혼자 이겨낼려고 하는 것 같고, 또 한국에 있든 캐나다에 있든 제가 정착 할 곳이 없다는게 힘든 부분인 것 같아요.
+I also tend to keep my worries to myself because I don’t want my parents in Korea to worry about me even more. I try to deal with things on my own instead. Another difficult part is that I don’t really feel like I have a place where I can truly settle down, whether it’s Korea or Canada. 
+</div>
+                            <div class="script-line" data-index="8">캐나다에서는 유학생 신분으로 살면서 학교 긱사도 옮겨다녀야하고, 한국은 오래살던 곳이 아니라 익숙한 느낌을 받지는 못 하는 것 같아요. 그래서 편하게 정착 할 곳이 없다는게 어려운 부분인 것 같고요 
+In Canada, I’m living here as an international student, and I have to move between different university residences. At the same time, Korea doesn’t necessarily feel like home either, since I haven’t lived there for a long time. So, not having a place that truly feels like home or somewhere I can comfortably settle down has been one of the more difficult parts for me. 
+</div>
+                            <div class="script-line" data-index="9">그래도 혼자 해외에서 살면서 자신감도 생기고, 독립적으로 살면서 새로운 저의 모습도 많이 찾게 되는 것 같아요. 
+At the same time, living abroad on my own has also helped me gain confidence and become more independent. Through living on my own, I’ve been able to discover new sides of myself that I didn’t know before. 
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Autoplay Looping Videos -->
+            <div class="media-item">
+                <video src="../assets/videos/shortfilm/fall short film_1_1_1.mp4" autoplay muted loop playsinline preload="auto"></video>
+            </div>
+            <div class="media-item">
+                <video src="../assets/videos/shortfilm/fall short film_1_2_1.mp4" autoplay muted loop playsinline preload="auto"></video>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- Back Button Dynamic Referrer Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const backBtn = document.getElementById("back-btn");
+            const referrer = document.referrer;
+
+            // Check if the user came from the Works page
+            if (referrer.includes("works.html")) {
+                backBtn.href = "../works.html";
+                backBtn.textContent = "← WORKS";
+            } else {
+                // Default fallback to Home
+                backBtn.href = "../index.html";
+                backBtn.textContent = "← HOME";
+            }
+        });
+    </script>
+
+    <!-- Spotify-Style Lyric/Screenplay Auto-Scroll Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const viewport = document.getElementById("scriptViewport");
+            const lines = document.querySelectorAll(".script-line");
+            let currentIndex = 0;
+
+            function updateActiveLine(index) {
+                lines.forEach((line, i) => {
+                    if (i === index) {
+                        line.classList.add("active");
+                        // Smoothly center the active line inside viewport
+                        const lineTop = line.offsetTop;
+                        const lineHeight = line.offsetHeight;
+                        const viewportHeight = viewport.clientHeight;
+                        viewport.scrollTo({
+                            top: lineTop - (viewportHeight / 2) + (lineHeight / 2),
+                            behavior: "smooth"
+                        });
+                    } else {
+                        line.classList.remove("active");
+                    }
+                });
+            }
+
+            // Click to jump to any line directly
+            lines.forEach((line, index) => {
+                line.addEventListener("click", () => {
+                    currentIndex = index;
+                    updateActiveLine(currentIndex);
+                });
+            });
+
+            // Initial focus
+            updateActiveLine(currentIndex);
+
+            // Automatic idle scroll loop
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % lines.length;
+                updateActiveLine(currentIndex);
+            }, 3200);
+        });
+    </script>
+</body>
+</html>
