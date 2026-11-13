@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noah Li 150 psig Compressed-Air Receiver (ASME VIII-1)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Styles for this page only (tabs, stat cards, calculation blocks). Everything else comes from ../style.css -->
+    <style>
+        /* The project page sits inside a mix-blend-mode: difference container (see style.css),
+           so everything here uses white text/borders on transparent backgrounds, like the
+           rest of the page. White shows up as dark on the light page background. */
+        .pv-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0 32px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .pv-tab {
+            font: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #ffffff;
+            opacity: 0.55;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 12px 4px;
+            margin-right: 20px;
+            margin-bottom: -1px;
+            cursor: pointer;
+            transition: opacity 0.2s ease, border-color 0.2s ease;
+        }
+        .pv-tab:hover { opacity: 0.85; }
+        .pv-tab:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
+        .pv-tab[aria-selected="true"] { opacity: 1; border-bottom-color: #ffffff; }
+        .pv-panel[hidden] { display: none; }
+        .project-content, .pv-panel { min-width: 0; }
+
+        .pv-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 24px 0 8px 0;
+        }
+        .pv-stat {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 16px;
+            color: #ffffff;
+        }
+        .pv-stat .num { display: block; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+        .pv-stat .lbl { display: block; font-size: 0.7rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+
+        .pv-note {
+            font-size: 0.9rem !important;
+            opacity: 0.75;
+            border-left: 2px solid #ffffff;
+            padding: 4px 0 4px 14px;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .pv-eq {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 14px 16px;
+            margin: 14px 0 20px 0;
+            font-size: 0.95rem;
+            line-height: 1.9;
+            color: #ffffff;
+            overflow-x: auto;
+            font-variant-numeric: tabular-nums;
+        }
+        .pv-eq .res { font-weight: 600; }
+
+        .pv-table-wrap { overflow-x: auto; margin: 14px 0 22px 0; }
+        .pv-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            color: #ffffff;
+            font-variant-numeric: tabular-nums;
+        }
+        .pv-table th, .pv-table td {
+            text-align: left;
+            padding: 9px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            vertical-align: top;
+        }
+        .pv-table th {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #ffffff;
+            white-space: nowrap;
+        }
+        .pv-table td.num, .pv-table th.num { text-align: right; white-space: nowrap; }
+        .pv-table tr.total td { font-weight: 600; border-top: 1px solid #ffffff; }
+
+        .pv-subnav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 18px;
+            margin: 0 0 28px 0;
+            font-size: 0.8rem;
+        }
+        .project-content .pv-subnav a { text-decoration: none; opacity: 0.6; }
+        .project-content .pv-subnav a:hover { opacity: 1; text-decoration: underline; }
+
+        .pv-panel h3 { margin-top: 36px; }
+        .pv-panel h4.pv-h4 { margin: 22px 0 6px 0; font-size: 1rem; font-weight: 600; color: #ffffff; }
+
+        /* The page background blend inverts colors, so invert the 3D viewer once to get natural colors back */
+        #vesselModel { filter: invert(1); }
+        .pv-video { display: block; width: 100%; height: auto; filter: invert(1); background: transparent; }
+
+        @media (max-width: 700px) {
+            .pv-tab { margin-right: 14px; font-size: 0.85rem; }
+            .pv-stat .num { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body class="project-body">
+
+    <!-- =========================================
+         HEADER / TOP NAVIGATION
+    ========================================== -->
+    <header class="header">
+        <div class="logo">
+            <a href="../engineering.html" class="back-home-link"><h1>Noah Li</h1></a>
+        </div>
+
+        <!-- Three dots button -->
+        <button class="dots-btn" id="contactToggle" aria-label="Open contact info">
+            •••
+        </button>
+
+        <!-- Contact Popover / Tab -->
+        <div class="contact-tab" id="contactTab">
+            <button class="close-btn" id="contactClose">&times;</button>
+            <h3>Contact</h3>
+            <p><a href="mailto:noah.li@ucalgary.ca">noah.li@ucalgary.ca</a></p>
+            <p><a href="https://www.linkedin.com/in/noahlizh/" target="_blank" rel="noopener">LinkedIn ↗</a></p>
+            <p class="location">Calgary, AB</p>
+
+            <div class="contact-actions">
+                <a href="../engineering.html" class="portfolio-btn">← Engineering Portfolio</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================================
+         PROJECT CONTENT CONTAINER
+    ========================================== -->
+    <main class="project-container">
+
+        <!-- Project Header / Title -->
+        <div class="project-header">
+            <span class="project-category">Pressure Vessel Design / ASME VIII-1 &amp; FEA</span>
+            <h2>150 psig Compressed-Air Receiver</h2>
+        </div>
+
+        <!-- Tabs -->
+        <div class="pv-tabs" role="tablist" aria-label="Project sections">
+            <button class="pv-tab" role="tab" id="tab-summary" aria-controls="panel-summary" aria-selected="true">Summary &amp; 3D Model</button>
+            <button class="pv-tab" role="tab" id="tab-calcs" aria-controls="panel-calcs" aria-selected="false" tabindex="-1">Hand Calculations &amp; Technical Details</button>
+        </div>
+
+        <!-- Project Body Grid (Metadata Left, Writeup Right) -->
+        <div class="project-grid">
+
+            <!-- Left Column: Specs (stays visible in both tabs) -->
+            <div class="project-sidebar">
+                <div class="spec-block">
+                    <h4>Design Basis</h4>
+                    <p><strong>Code:</strong> ASME BPVC Section VIII, Div. 1 (2017)</p>
+                    <p><strong>Design:</strong> 150 psig at 200°F, MDMT −20°F</p>
+                    <p><strong>Vessel MAWP:</strong> 175 psig</p>
+                </div>
+                <div class="spec-block">
+                    <h4>Materials</h4>
+                    <p><strong>Shell and heads:</strong> SA-516 Gr. 70 plate</p>
+                    <p><strong>Nozzles:</strong> SA-106 Gr. B pipe, NPS 6 Sch 80</p>
+                </div>
+                <div class="spec-block">
+                    <h4>Tools</h4>
+                    <p>Hand calculations (Python-verified), SolidWorks, ANSYS Mechanical</p>
+                </div>
+            </div>
+
+            <!-- Right Column: tabbed content -->
+            <div class="project-content">
+
+                <!-- =====================================================
+                     TAB 1: SUMMARY & 3D MODEL
+                ====================================================== -->
+                <section class="pv-panel" id="panel-summary" role="tabpanel" aria-labelledby="tab-summary">
+
+                    <h3>Executive Summary</h3>
+                    <p>
+                        <strong>Horizontal Compressed-Air Receiver, Design to ASME VIII-1</strong><br>
+                        Designed a 48 in ID horizontal air receiver for 150 psig at 200°F, with a 3/8 in shell, 7/16 in torispherical heads and an NPS 6 Sch 80 nozzle on the centerline of each head. Worked the shell, head, MAWP, hydrotest, nozzle neck, opening reinforcement and attachment weld calculations by hand, rebuilt them to match the SolidWorks model as it evolved, and checked the finished model in ANSYS Mechanical. The FEA agrees with the hand calculations to within about 1.5% on shell and head membrane stress.
+                    </p>
+
+                    <div class="pv-stats">
+                        <div class="pv-stat"><span class="num">175 psig</span><span class="lbl">Vessel MAWP</span></div>
+                        <div class="pv-stat"><span class="num">227.5 psig</span><span class="lbl">Hydrotest pressure</span></div>
+                        <div class="pv-stat"><span class="num">+87.6%</span><span class="lbl">Nozzle reinforcement margin</span></div>
+                        <div class="pv-stat"><span class="num">&le;1.5%</span><span class="lbl">FEA vs. hand, shell &amp; head</span></div>
+                    </div>
+
+                    <!-- Full-Width Interactive 3D Model Showcase -->
+                    <div style="margin: 40px 0;">
+                        <h3 style="margin-bottom: 12px;">Interactive Assembly Preview</h3>
+                        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+                        <model-viewer
+                            id="vesselModel"
+                            src="../assets/Pressure_Vessel/Pressure_Vessel.glb"
+                            alt="Pressure vessel 3D model"
+                            auto-rotate
+                            camera-controls
+                            exposure="0.9"
+                            shadow-intensity="0"
+                            environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
+                            field-of-view="20deg"
+                            style="width: 100%; height: 600px; background-color: transparent;">
+                        </model-viewer>
+                        <p class="pv-note">Model as analyzed in ANSYS: shell, two torispherical heads, two nozzles with reinforcing pads, and two saddles. Welds, vent holes and a manhole are not modeled. Drag to rotate, scroll to zoom.</p>
+                    </div>
+
+                    <!-- ANSYS simulation recording -->
+                    <div style="margin: 40px 0;">
+                        <h3 style="margin-bottom: 12px;">FEA Simulation</h3>
+                        <video id="ansysVideo" class="pv-video"
+                               src="../assets/Pressure_Vessel/ansys_simulation.mp4"
+                               autoplay muted loop playsinline controls preload="auto"
+                               aria-label="ANSYS Mechanical simulation of the pressure vessel under 150 psig internal pressure">
+                        </video>
+                        <p class="pv-note">ANSYS Mechanical static structural run at 150 psig internal pressure with nozzle end loads. The full-model results are compared against the hand calculations on the Hand Calculations tab. The total deformation is scaled for visualization purposes.</p>
+                    </div>
+
+                    <h3>Design Approach</h3>
+                    <ul>
+                        <li><strong>Design basis first.</strong> Pressure, temperature, material, joint efficiency and corrosion allowance were fixed up front, and every input is tagged as an assumption, a code value or a model dimension.</li>
+                        <li><strong>Hand calculations track the model.</strong> Each time the SolidWorks model changed (head type, nozzle size and position, pad, saddle radius), the calculations were rerun against the exported geometry. Head thickness went from a 2:1 ellipsoidal estimate to the 7/16 in torispherical head that is actually modeled.</li>
+                        <li><strong>FEA as an independent check.</strong> The full model was loaded with 150 psig internal pressure plus the nozzle end thrust and compared against the hand values on linearized stress paths, not on peak stress.</li>
+                    </ul>
+
+                    <h3>Key Results</h3>
+                    <div class="pv-table-wrap">
+                        <table class="pv-table">
+                            <thead><tr><th>Item</th><th>Result</th><th>Reference</th></tr></thead>
+                            <tbody>
+                                <tr><td>Shell, 3/8 in</td><td>Passes (needs 0.339 in with corrosion allowance); shell MAWP 175.1 psig</td><td>UG-27(c)</td></tr>
+                                <tr><td>Head, 7/16 in torispherical</td><td>Needs 0.377 in at 150 psig; head MAWP 186.1 psig</td><td>UG-32(e)</td></tr>
+                                <tr><td>Nozzle neck, Sch 80</td><td>0.378 in against 0.267 in required (Sch 40 fails)</td><td>UG-45</td></tr>
+                                <tr><td>Nozzle reinforcement</td><td>1.864 in² available against 0.994 in² required at 175 psig</td><td>UG-37, UG-40</td></tr>
+                                <tr><td>Impact test</td><td>Exempt</td><td>UG-20(f)</td></tr>
+                                <tr><td>FEA mid-span hoop stress</td><td>66.2 MPa against 66.2 MPa by hand</td><td>ANSYS static structural</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="pv-note">
+                        This is a learning project, not a certified design. Vessels in Alberta are registered with ABSA and designed by a registered professional. Known gaps are listed on the Hand Calculations tab, including the missing inspection opening and the saddles, which were sized by eye and not designed.
+                    </p>
+
+                    <p><a href="#calcs" class="pv-jump" data-tab="calcs">See all hand calculations and technical details →</a></p>
+                </section>
+
+                <!-- =====================================================
+                     TAB 2: HAND CALCULATIONS & TECHNICAL DETAILS
+                ====================================================== -->
+                <section class="pv-panel" id="panel-calcs" role="tabpanel" aria-labelledby="tab-calcs" hidden>
+
+                    <nav class="pv-subnav" aria-label="Calculation sections">
+                        <a href="#c-basis">Basis</a>
+                        <a href="#c-impact">Impact exemption</a>
+                        <a href="#c-shell">Shell</a>
+                        <a href="#c-head">Head</a>
+                        <a href="#c-mawp">MAWP &amp; hydrotest</a>
+                        <a href="#c-neck">Nozzle neck</a>
+                        <a href="#c-reinf">Reinforcement</a>
+                        <a href="#c-weld">Weld strength</a>
+                        <a href="#c-fea">FEA validation</a>
+                        <a href="#c-limits">Limitations</a>
+                    </nav>
+
+                    <p>
+                        All calculations follow ASME BPVC Section VIII Div. 1 (2017) and were recalculated against the final SolidWorks model (v6). Allowable stresses come from ASME II-D 2019 Table 1A, so the stress edition is one year newer than the rule edition. Every number was reproduced with a Python script.
+                    </p>
+
+                    <!-- 1 BASIS -->
+                    <h3 id="c-basis">1. Basis and Model Inputs</h3>
+                    <div class="pv-table-wrap">
+                        <table class="pv-table">
+                            <thead><tr><th>Item</th><th>Value</th><th>Origin</th></tr></thead>
+                            <tbody>
+                                <tr><td>Design pressure and temperature</td><td>150 psig at 200°F</td><td>Assumption</td></tr>
+                                <tr><td>MDMT</td><td>−20°F</td><td>Assumption</td></tr>
+                                <tr><td>Material</td><td>SA-516-70 plate, SA-106 Gr. B pipe</td><td>Assumption</td></tr>
+                                <tr><td>Allowable stress S</td><td>20,000 psi (plate), 17,100 psi (pipe) at 200°F</td><td>Code, II-D 2019 Table 1A</td></tr>
+                                <tr><td>Joint efficiency E</td><td>0.85 (Type 1 butt joint, spot RT)</td><td>Code, Table UW-12</td></tr>
+                                <tr><td>Corrosion allowance c</td><td>0.125 in</td><td>Assumption, UG-25</td></tr>
+                                <tr><td>Inside diameter</td><td>48.0 in</td><td>Model</td></tr>
+                                <tr><td>Shell thickness</td><td>0.375 in</td><td>Model</td></tr>
+                                <tr><td>Tangent-to-tangent length</td><td>120 in (x = −10 to 110 in)</td><td>Model</td></tr>
+                                <tr><td>Head crown radius, knuckle radius (inside)</td><td>37.633 in, 3.952 in</td><td>Model</td></tr>
+                                <tr><td>Straight flange</td><td>2.205 in</td><td>Model</td></tr>
+                                <tr><td>Head thickness</td><td>0.4375 in (7/16 in)</td><td>Model</td></tr>
+                                <tr><td>Nozzle</td><td>NPS 6 Sch 80: 6.625 in OD, 0.432 in wall, set on each head centerline</td><td>Model</td></tr>
+                                <tr><td>Opening in head</td><td>5.761 in diameter (equal to the nozzle ID)</td><td>Model</td></tr>
+                                <tr><td>Reinforcing pad</td><td>11.574 in OD × 0.1 in thick</td><td>Model</td></tr>
+                                <tr><td>Weld legs (nozzle-to-pad, pad edge)</td><td>1/4 in, 1/4 in</td><td>Assumption, not modeled</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>Shell length does not affect any thickness, MAWP or reinforcement result.</p>
+
+                    <!-- 2 IMPACT -->
+                    <h3 id="c-impact">2. Impact Test Exemption, UG-20(f)</h3>
+                    <p>
+                        All five conditions are met: P-No. 1 Gr. 1 or 2 material at most 1 in thick (shell 0.375 in, head 0.4375 in, neck 0.432 in), hydrotest per UG-99(b), design temperature between −20°F and 650°F, and no thermal shock or cyclic loading (assumed). Impact testing per UG-84 is not required.
+                    </p>
+
+                    <!-- 3 SHELL -->
+                    <h3 id="c-shell">3. Shell Thickness, UG-27(c)</h3>
+                    <div class="pv-eq">
+                        t<sub>circ</sub> = PR / (SE − 0.6P) = 150(24.125) / (20,000(0.85) − 0.6(150)) = <span class="res">0.2140 in</span><br>
+                        t<sub>long</sub> = PR / (2SE + 0.4P) = 150(24.125) / (2(20,000)(0.85) + 0.4(150)) = <span class="res">0.1062 in</span>
+                    </div>
+                    <p>
+                        The circumferential case governs. With the corrosion allowance the requirement is 0.339 in, so the 3/8 in shell passes. Shell MAWP, using the corroded thickness of 0.250 in:
+                    </p>
+                    <div class="pv-eq">
+                        P<sub>shell</sub> = SEt / (R + 0.6t) = 20,000(0.85)(0.250) / (24.125 + 0.6(0.250)) = <span class="res">175.1 psig</span>
+                    </div>
+
+                    <!-- 4 HEAD -->
+                    <h3 id="c-head">4. Torispherical Head, UG-32(e)</h3>
+                    <p>Corroded radii: L = 37.633 + 0.125 = 37.758 in and r = 3.952 + 0.125 = 4.077 in.</p>
+                    <div class="pv-eq">
+                        M = ¼ (3 + √(L/r)) = ¼ (3 + √9.261) = <span class="res">1.511</span><br>
+                        t = PLM / (2SE − 0.2P) = 150(37.758)(1.511) / (2(20,000)(0.85) − 0.2(150)) = <span class="res">0.2519 in</span>
+                    </div>
+                    <p>
+                        With the corrosion allowance this is 0.3769 in. At 175 psig it is 0.2939 + 0.125 = 0.4189 in. The model's 0.4375 in head covers both. Head MAWP with t = 0.4375 − 0.125 = 0.3125 in:
+                    </p>
+                    <div class="pv-eq">
+                        P<sub>head</sub> = 2SEt / (LM + 0.2t) = 2(20,000)(0.85)(0.3125) / (37.758(1.511) + 0.2(0.3125)) = <span class="res">186.1 psig</span>
+                    </div>
+                    <p>
+                        Geometry limits: knuckle radius is 8.1% of the skirt outside diameter (at least 6%) and at least 3t, and t/L = 0.0116 (at least 0.002). Inside head depth excluding the flange: 10.57 in. A 3/8 in head would only reach 148.9 psig, which is why the heads were increased to 7/16 in.
+                    </p>
+
+                    <!-- 5 MAWP -->
+                    <h3 id="c-mawp">5. MAWP and Hydrostatic Test, UG-98 and UG-99</h3>
+                    <p>The shell (175.1 psig) is the weakest part, ahead of the head (186.1 psig), so the vessel MAWP is <strong>175 psig</strong>.</p>
+                    <div class="pv-eq">
+                        P<sub>test</sub> = 1.3 × MAWP × (S<sub>test</sub> / S<sub>design</sub>) = 1.3 × 175 × 1.0 = <span class="res">227.5 psig</span>
+                    </div>
+
+                    <!-- 6 NECK -->
+                    <h3 id="c-neck">6. Nozzle Neck Thickness, UG-45</h3>
+                    <p>t<sub>b1</sub> uses the required head thickness at the nozzle with E = 1 (crown-radius sphere), plus c:</p>
+                    <div class="pv-eq">
+                        t<sub>b1</sub> = PL / (2S − 0.2P) + c = 150(37.758) / (2(20,000) − 0.2(150)) + 0.125 = <span class="res">0.2667 in</span><br>
+                        t<sub>b3</sub> = 0.245 + 0.125 = 0.370 in (Table UG-45, NPS 6), so t<sub>b</sub> = 0.2667 in<br>
+                        t<sub>a</sub> = PR<sub>n</sub> / (S<sub>n</sub>E − 0.6P) + c = 150(3.006) / (17,100 − 90) + 0.125 = <span class="res">0.1515 in</span>
+                    </div>
+                    <p>
+                        Required: 0.2667 in. Sch 80 minimum wall 0.432 × 0.875 = 0.378 in <strong>passes</strong>. Sch 40 (0.245 in) fails. Pipe wall and undertolerance values are to be checked against B36.10M and SA-106.
+                    </p>
+
+                    <!-- 7 REINFORCEMENT -->
+                    <h3 id="c-reinf">7. Nozzle Reinforcement on the Head, UG-37 and UG-40</h3>
+                    <p>
+                        The nozzle sits on the outside of the head, the head opening equals the nozzle ID, and no neck projects inside. That is a nozzle abutting the vessel wall, so f<sub>r1</sub> = 1.0 and A<sub>3</sub> = 0. The pad is treated as a ring from the nozzle OD outward.
+                    </p>
+                    <p>
+                        Corroded values: t = 0.3125 in, t<sub>n</sub> = 0.307 in, R<sub>n</sub> = 3.006 in, d = 6.011 in, f<sub>r2</sub> = S<sub>n</sub>/S = 0.855, F = 1, E<sub>1</sub> = 1. Required thickness for the opening, treating the head as a sphere of the crown radius with E = 1, at 175 psig:
+                    </p>
+                    <div class="pv-eq">
+                        t<sub>r</sub> = PL / (2S − 0.2P) = 175(37.758) / (2(20,000) − 0.2(175)) = <span class="res">0.1653 in</span><br>
+                        A = d · t<sub>r</sub> · F = 6.011(0.1653) = <span class="res">0.994 in²</span>
+                    </div>
+                    <div class="pv-table-wrap">
+                        <table class="pv-table">
+                            <thead><tr><th>Term</th><th class="num">Area (in²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>A<sub>1</sub> = d(t − t<sub>r</sub>) = 6.011(0.1472)</td><td class="num">0.885</td></tr>
+                                <tr><td>A<sub>2</sub> excess nozzle neck</td><td class="num">0.369</td></tr>
+                                <tr><td>A<sub>41</sub> nozzle-to-pad weld, 1/4 in leg</td><td class="num">0.053</td></tr>
+                                <tr><td>A<sub>42</sub> pad edge weld, 1/4 in leg</td><td class="num">0.063</td></tr>
+                                <tr><td>A<sub>5</sub> = (D<sub>p</sub> − d − 2t<sub>n</sub>)t<sub>e</sub> = (11.574 − 6.011 − 0.614)(0.1)</td><td class="num">0.495</td></tr>
+                                <tr class="total"><td>Total available</td><td class="num">1.864</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        Margin <strong>+87.6%</strong>. UG-40 limits: 6.011 in each side of the axis parallel to the shell (the 5.787 in pad radius counts in full) and 0.781 in normal to the shell.
+                    </p>
+                    <div class="pv-table-wrap">
+                        <table class="pv-table">
+                            <thead><tr><th>Case</th><th class="num">P (psig)</th><th class="num">Required (in²)</th><th class="num">Available (in²)</th><th>Result</th></tr></thead>
+                            <tbody>
+                                <tr><td>No pad</td><td class="num">150</td><td class="num">0.852</td><td class="num">1.448</td><td>Passes (+70.0%)</td></tr>
+                                <tr><td>No pad</td><td class="num">175</td><td class="num">0.994</td><td class="num">1.300</td><td>Passes (+30.8%), limit 201 psig</td></tr>
+                                <tr><td>Pad 11.574 × 0.1</td><td class="num">150</td><td class="num">0.852</td><td class="num">2.012</td><td>Passes (+136%)</td></tr>
+                                <tr><td>Pad 11.574 × 0.1</td><td class="num">175</td><td class="num">0.994</td><td class="num">1.864</td><td>Passes (+87.6%), limit 250 psig</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>The pad is not required by area at 175 psig with 7/16 in heads, so it is kept as an optional detail.</p>
+
+                    <!-- 8 WELD -->
+                    <h3 id="c-weld">8. Attachment Weld Strength, UG-41 and UW-16</h3>
+                    <p>
+                        The model shows no welds, so this check assumes the usual detail for a set-on nozzle: a full-penetration groove weld to the head, a 1/4 in fillet from the nozzle to the pad, and a 1/4 in fillet around the pad edge. UW-15(c) stresses: groove weld in tension 74%, fillet shear 49%, nozzle wall shear 70%. Treat this check as simplified. Load to carry at 175 psig:
+                    </p>
+                    <div class="pv-eq">
+                        W = (A − A<sub>1</sub>) S = (0.994 − 0.885)(20,000) = <span class="res">2,185 lbf</span>
+                    </div>
+                    <div class="pv-table-wrap">
+                        <table class="pv-table">
+                            <thead><tr><th>Element</th><th class="num">Resistance (lbf)</th><th class="num">Ratio to load</th></tr></thead>
+                            <tbody>
+                                <tr><td>Groove weld in tension (half ring)</td><td class="num">38,554</td><td class="num">17.6</td></tr>
+                                <tr><td>Pad edge fillet in shear</td><td class="num">31,496</td><td class="num">14.4</td></tr>
+                                <tr><td>Nozzle wall in shear</td><td class="num">36,470</td><td class="num">16.7</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        UW-16 minimum sizes: pad edge fillet throat 0.177 in against 0.050 in required, and nozzle-to-pad fillet leg 0.25 in against 0.07 in required. All pass.
+                    </p>
+
+                    <!-- 9 FEA -->
+                    <h3 id="c-fea">9. FEA Validation (ANSYS Mechanical)</h3>
+                    <h4 class="pv-h4">Setup</h4>
+                    <ul>
+                        <li>Static structural, linear elastic, full 29-body model imported from the SolidWorks STEP file, with bonded contacts between bodies and a single Structural Steel material (E = 200 GPa, ν = 0.3).</li>
+                        <li>Internal pressure of 1.0342 MPa (150 psi) on all inside faces, plus an outward end force of 17,393 N (3,910 lbf) on each nozzle end to represent the pressure thrust of the open nozzle.</li>
+                        <li>Saddle supports with no gravity, so the reactions should sum to near zero. Net residual: about 0.2% of the total pressure thrust.</li>
+                        <li>Stresses read on linearized paths through the wall: shell mid-span, head crown and head near the nozzle opening. Peak stress contours are not used, because bonded sharp corners are singularities.</li>
+                    </ul>
+
+                    <h4 class="pv-h4">Hand calculation against FEA</h4>
+                    <div class="pv-table-wrap">
+                        <table class="pv-table">
+                            <thead><tr><th>Quantity</th><th class="num">FEA</th><th class="num">Hand</th><th class="num">Difference</th></tr></thead>
+                            <tbody>
+                                <tr><td>Shell hoop stress, through-wall average</td><td class="num">66.21 MPa</td><td class="num">66.2 MPa</td><td class="num">0.0%</td></tr>
+                                <tr><td>Shell axial stress, average</td><td class="num">33.28 MPa</td><td class="num">32.8 MPa</td><td class="num">+1.5%</td></tr>
+                                <tr><td>Shell von Mises membrane (linearized)</td><td class="num">57.8 MPa</td><td class="num">57.3 MPa</td><td class="num">+0.9%</td></tr>
+                                <tr><td>Head crown membrane</td><td class="num">44.64 MPa</td><td class="num">44.7 MPa (6,490 psi)</td><td class="num">−0.1%</td></tr>
+                                <tr><td>Head membrane near the nozzle opening</td><td class="num">47.59 MPa</td><td class="num">no closed-form value</td><td class="num">about 6% above crown</td></tr>
+                                <tr><td>Head near opening, membrane + bending (inside)</td><td class="num">50.58 MPa</td><td class="num">no closed-form value</td><td class="num">far below 1.5 S</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        Hand shell values are the Lamé thick-wall solution at 150 psig (hoop 9,676 psi inside, 9,526 psi outside, axial 4,763 psi). The head crown value is P·L<sub>mean</sub>/(2t) = 150(37.85)/(2 × 0.4375) = 6,490 psi. The slightly higher membrane stress near the nozzle is the expected local effect of the opening.
+                    </p>
+
+                    <h4 class="pv-h4">Mesh convergence</h4>
+                    <p>The nozzle, pad and nearby head bodies were refined in two steps while everything else was held fixed.</p>
+                    <div class="pv-table-wrap">
+                        <table class="pv-table">
+                            <thead><tr><th>Result (MPa)</th><th class="num">Baseline (44,205 nodes)</th><th class="num">10 mm (52,073)</th><th class="num">8 mm (69,126)</th><th class="num">Last step</th></tr></thead>
+                            <tbody>
+                                <tr><td>Mid-span membrane</td><td class="num">57.80</td><td class="num">57.80</td><td class="num">57.80</td><td class="num">0%</td></tr>
+                                <tr><td>Head crown membrane</td><td class="num">44.03</td><td class="num">44.33</td><td class="num">44.64</td><td class="num">+0.7%</td></tr>
+                                <tr><td>Head near opening, membrane</td><td class="num">n/a</td><td class="num">46.95</td><td class="num">47.59</td><td class="num">+1.4%</td></tr>
+                                <tr><td>Head near opening, membrane + bending</td><td class="num">n/a</td><td class="num">50.07</td><td class="num">50.58</td><td class="num">+1.0%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        Every membrane value moved by less than 2% on the last refinement, so they are reported as converged within about 1 to 2%. Peak stress at the sharp bonded corners keeps rising with refinement (609, 618, then 628 MPa maximum principal). That is a singularity, so it is not reported as a result.
+                    </p>
+
+                    <!-- 10 LIMITS -->
+                    <h3 id="c-limits">10. Model Check, Limitations and Open Items</h3>
+                    <div class="pv-table-wrap">
+                        <table class="pv-table">
+                            <thead><tr><th>Dimension</th><th>Model v6</th><th>Used in the calcs</th><th>Match</th></tr></thead>
+                            <tbody>
+                                <tr><td>Shell ID and thickness</td><td>48.0 in, 0.375 in</td><td>48.0 in, 0.375 in</td><td>Yes</td></tr>
+                                <tr><td>Head crown and knuckle radius (inside)</td><td>37.633 in, 3.952 in</td><td>37.633 in, 3.952 in</td><td>Yes</td></tr>
+                                <tr><td>Head thickness</td><td>0.4375 in</td><td>0.4375 in</td><td>Yes</td></tr>
+                                <tr><td>Nozzle OD and wall</td><td>6.625 in, 0.432 in</td><td>6.625 in, 0.432 in</td><td>Yes</td></tr>
+                                <tr><td>Nozzle opening in head</td><td>5.761 in (nozzle ID), set on the head</td><td>Same (abutting nozzle, no inward projection)</td><td>Yes</td></tr>
+                                <tr><td>Pad outside diameter and thickness</td><td>11.574 in, 0.1 in</td><td>11.574 in, 0.1 in</td><td>Yes</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul>
+                        <li><strong>Pad bore.</strong> The pad's hole is the nozzle ID, so the nozzle sits on top of the pad. A real pad has a hole the size of the nozzle OD. The calculations treat the pad as a ring from the nozzle OD outward.</li>
+                        <li><strong>No manhole.</strong> A 48 in compressed-air vessel needs an inspection opening under UG-46 (exemptions to be verified, including whether the two NPS 6 nozzles could serve). As modeled, the vessel is not code-complete for that requirement.</li>
+                        <li><strong>Saddles.</strong> Centered 22.5 in inside each tangent line (75 in apart) and sized by eye. They are not designed (no Zick analysis), so stresses near the saddles are not design values.</li>
+                        <li><strong>Not modeled:</strong> welds, pad vent holes (UG-37(g)), flanges and anchor bolts.</li>
+                        <li><strong>Div. 2 comparison.</strong> The FEA stresses are far below any plausible Div. 2 allowable, but the Table 5A allowable stress has not been looked up yet, so no formal Pm / PL / Pb limit check is shown. Div. 2 is also a different code from the Div. 1 hand calculations, and the FEA uses nominal thickness where the code uses corroded thickness.</li>
+                        <li><strong>To verify:</strong> B36.10M wall thicknesses and the SA-106 undertolerance; the UG-32(e) formula and limits; the UG-37(a) wording for torispherical heads; the UG-41 paths for a set-on nozzle; the UG-46 requirements. Allowable stresses (II-D 2019) and rules (Div. 1 2017) are from different editions.</li>
+                        <li><strong>Not covered:</strong> saddle design, flange rating and external loads.</li>
+                    </ul>
+
+                    <p><a href="#summary" class="pv-jump" data-tab="summary">← Back to summary and 3D model</a></p>
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- =========================================
+         JAVASCRIPT CONTROLS
+    ========================================== -->
+    <script>
+        // Contact Popover Toggle
+        const toggleBtn = document.getElementById('contactToggle');
+        const closeBtn = document.getElementById('contactClose');
+        const contactTab = document.getElementById('contactTab');
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactTab.classList.toggle('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            contactTab.classList.remove('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!contactTab.contains(e.target) && e.target !== toggleBtn) {
+                contactTab.classList.remove('active');
+            }
+        });
+
+        // Project tabs (summary / calculations), with keyboard arrows and #hash support
+        const tabs = {
+            summary: { btn: document.getElementById('tab-summary'), panel: document.getElementById('panel-summary') },
+            calcs:   { btn: document.getElementById('tab-calcs'),   panel: document.getElementById('panel-calcs') }
+        };
+
+        function showTab(name, focus) {
+            Object.keys(tabs).forEach((key) => {
+                const on = key === name;
+                tabs[key].btn.setAttribute('aria-selected', on ? 'true' : 'false');
+                tabs[key].btn.tabIndex = on ? 0 : -1;
+                tabs[key].panel.hidden = !on;
+            });
+            if (focus) tabs[name].btn.focus();
+            try { history.replaceState(null, '', '#' + name); } catch (e) {}
+        }
+
+        Object.keys(tabs).forEach((key) => {
+            tabs[key].btn.addEventListener('click', () => { showTab(key); window.scrollTo({ top: 0 }); });
+            tabs[key].btn.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    showTab(key === 'summary' ? 'calcs' : 'summary', true);
+                }
+            });
+        });
+
+        document.querySelectorAll('.pv-jump').forEach((a) => {
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                showTab(a.dataset.tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Autoplay the FEA video only while it is on screen (saves battery and bandwidth)
+        const ansysVideo = document.getElementById('ansysVideo');
+        if (ansysVideo && 'IntersectionObserver' in window) {
+            new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) { ansysVideo.play().catch(() => {}); }
+                    else { ansysVideo.pause(); }
+                });
+            }, { threshold: 0.25 }).observe(ansysVideo);
+        }
+
+        // Open the right tab from the URL (#calcs, or a section id such as #c-head)
+        const hash = location.hash.replace('#', '');
+        if (hash === 'calcs' || hash.startsWith('c-')) {
+            showTab('calcs');
+            if (hash.startsWith('c-')) {
+                const el = document.getElementById(hash);
+                if (el) el.scrollIntoView();
+            }
+        }
+    </script>
+</body>
+</html>
